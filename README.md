@@ -2,9 +2,9 @@
 
 Add a static sitemap to your actix-web app.
 
-## Install 
+## Add to your project
 ```bash
-cargo install actix-sitemap-rs
+cargo add actix-sitemap-rs
 ```
 
 ## Use 
