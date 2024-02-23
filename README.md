@@ -1,5 +1,7 @@
 # actix-sitemap-rs
 
+Add a static sitemap to your actix-web app.
+
 ## Install 
 ```bash
 cargo install actix-sitemap-rs
@@ -12,10 +14,10 @@ use actix_web::{web::Data, App, HttpServer};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    
-    // Setup sitemap 
+     
+    // Sitemap will be available at : http://127.0.0.1:8080/.well-known/sitemaps.xml
     let sitemap = SitemapBuilder::default()
-        .static_file("./sitemaps.xml".to_string())
+        .static_file("./tests/sitemaps.xml".to_string())
         .web_directory(".well-known".to_string())
         .web_filename("sitemaps.xml".to_string())
         .not_found_strategy(ShowErrorMessageStrategy) // or RedirectToRootStrategy

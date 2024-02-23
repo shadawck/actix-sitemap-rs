@@ -29,10 +29,7 @@ impl NotFoundStrategy for RedirectToRootStrategy {
 pub struct ShowErrorMessageStrategy;
 impl NotFoundStrategy for ShowErrorMessageStrategy {
     fn handle_not_found(&self) -> HttpResponse {
-        let not_found_response =
-            HttpResponse::build(http::StatusCode::NOT_FOUND).body("404 Not Found");
-
-        not_found_response
+        HttpResponse::build(http::StatusCode::NOT_FOUND).body("404 Not Found")
     }
 }
 
@@ -63,13 +60,13 @@ impl Default for SitemapBuilder {
 }
 
 impl SitemapBuilder {
-    pub fn web_directory(mut self, web_directory: String) -> Self {
-        self.web_directory = web_directory;
+    pub fn static_file(mut self, static_file_path: String) -> Self {
+        self.static_file_path = static_file_path;
         self
     }
 
-    pub fn static_file(mut self, static_file_path: String) -> Self {
-        self.static_file_path = static_file_path;
+    pub fn web_directory(mut self, web_directory: String) -> Self {
+        self.web_directory = web_directory;
         self
     }
 
@@ -122,7 +119,7 @@ mod tests {
     #[actix_web::test]
     async fn given_sitemap_at_root_then_get_success_status_code_when_show_error_message_strategy() {
         let sitemap = SitemapBuilder::default()
-            .static_file("sitemaps.xml".to_string())
+            .static_file("./tests/sitemaps.xml".to_string())
             .web_filename("sitemaps.xml".to_string())
             .not_found_strategy(ShowErrorMessageStrategy)
             .build();
@@ -147,7 +144,7 @@ mod tests {
     async fn given_sitemap_with_webdirectory_then_get_success_status_code_when_show_error_message_strategy(
     ) {
         let sitemap = SitemapBuilder::default()
-            .static_file("./sitemaps.xml".to_string())
+            .static_file("./tests/sitemaps.xml".to_string())
             .web_directory(".well-known/".to_string())
             .web_filename("sitemaps.xml".to_string())
             .not_found_strategy(ShowErrorMessageStrategy)
@@ -172,7 +169,7 @@ mod tests {
     #[actix_web::test]
     async fn given_sitemap_then_get_not_found_when_show_error_message_strategy() {
         let sitemap = SitemapBuilder::default()
-            .static_file("./sitemaps.xml".to_string())
+            .static_file("./tests/sitemaps.xml".to_string())
             .web_directory(".well-known/".to_string())
             .web_filename("sitemaps.xml".to_string())
             .not_found_strategy(ShowErrorMessageStrategy)
@@ -197,7 +194,7 @@ mod tests {
     #[actix_web::test]
     async fn given_sitemap_then_get_not_found_when_bad_path_and_redirect_to_root_strategy() {
         let sitemap = SitemapBuilder::default()
-            .static_file("./sitemaps.xml".to_string())
+            .static_file("./tests/sitemaps.xml".to_string())
             .web_directory("./.well-known/".to_string())
             .web_filename("sitemaps.xml".to_string())
             .not_found_strategy(RedirectToRootStrategy)
